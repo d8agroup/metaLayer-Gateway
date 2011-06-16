@@ -4,3 +4,4 @@
 environment.py
 *_local_wsgi_*
 *logs*
+fabfile.py
