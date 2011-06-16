@@ -117,9 +117,9 @@ def authentication_factory():
 class AuthenticationProviders:
     class MockAuthenticationProvider(object):
         def authenticate(self, username, password):
-            if not username == 'matt':
+            if not username == 'metalayer':
                 return False, ['That RiverID was not found']
-            if not password == 'password':
+            if not password == '!!M3taM3ta':
                 return False, ['That password was wrong, sorry']
             return True, []
 
