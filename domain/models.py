@@ -53,7 +53,7 @@ class APIWrapper(Document):
     __collection__ = 'api_wrappers'
 
     #The database used for all objects in this project
-    __database__ = 'swift_gateway'
+    __database__ = 'ml_gateway'
 
     #Allow access to properties via dot notation
     use_dot_notation = True
@@ -122,7 +122,7 @@ class UnAuthenticatedUser(Document):
     __collection__ = 'un_authenticated_users'
 
     #The database used for all objects in this project
-    __database__ = 'swift_gateway'
+    __database__ = 'ml_gateway'
 
     #Allow access to properties via dot notation
     use_dot_notation = True
@@ -172,7 +172,7 @@ class UnAuthenticatedRateAbuser(Document):
     __collection__ = 'un_authenticated_rate_abusers'
 
     #The database used for all objects in this project
-    __database__ = 'swift_gateway'
+    __database__ = 'ml_gateway'
 
     #Allow access to properties via dot notation
     use_dot_notation = True
@@ -219,7 +219,7 @@ class AuthenticatedUser(Document):
     __collection__ = 'authenticated_users'
 
     #The database used for all objects in this project
-    __database__ = 'swift_gateway'
+    __database__ = 'ml_gateway'
 
     #Allow access to properties via dot notation
     use_dot_notation = True
@@ -266,7 +266,7 @@ class PricePlan(Document):
     __collection__ = 'price_plans'
 
     #The database used for all objects in this project
-    __database__ = 'swift_gateway'
+    __database__ = 'ml_gateway'
 
     #Allow access to properties via dot notation
     use_dot_notation = True
@@ -290,7 +290,7 @@ class AppTemplate(Document):
     __collection__ = 'app_templates'
 
     #The database used for all objects in this project
-    __database__ = 'swift_gateway'
+    __database__ = 'ml_gateway'
 
     #Allow access to properties via dot notation
     use_dot_notation = True
@@ -317,7 +317,7 @@ class Subscription(Document):
     __collection__ = 'subscriptions'
 
     #The database used for all objects in this project
-    __database__ = 'swift_gateway'
+    __database__ = 'ml_gateway'
 
     #Allow access to properties via dot notation
     use_dot_notation = True

@@ -141,7 +141,16 @@ class AuthenticationProviders:
             if not password == '!!M3taM3ta':
                 return False, ['That password was wrong, sorry']
             return True, []
-
+        
+    class MetaLayerAuthenticationProvider(object):
+        def authenticate(self, username, password):
+            #TODO In later versions this should alos check RiverID
+            if not password == '!!M3taM3ta':
+                return False["The password you supplied was incorrect"]
+            if not bool(re.search(username, config.get('appaccounts', 'apps'))):
+                return False["The password you supplied was not found"]
+            return True, []
+        
     class RiverIDAuthenticationProvider(object):
         def authenticate(self, username, password):
             key = config.get('oauthcredentials', 'oauth_consumer_key')

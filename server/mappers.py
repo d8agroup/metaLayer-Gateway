@@ -13,6 +13,9 @@ from urllib2 import Request
 import oauth2
 import time
 
+def no_mapping_required_mapper(request, api_endpoint):
+    pass;
+
 def direct_get_request_mapper(request, api_endpoint):
     """
     Method to map the GET parameters from one request on to a new urllib2.request

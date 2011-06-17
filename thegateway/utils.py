@@ -101,6 +101,9 @@ def build_app_stats_for_app_id(app_id):
 
     return stats
 
+def user_is_admin(user):
+    return bool(re.search(user.username, config.get('admin', 'accounts'))) or bool(re.search(user.username, config.get('appaccounts', 'apps')))
+
 def get_service_usage_statistics_for_app_id(app_id):
     try:
         results = domain_get_api_usage_statistics_for_app_id(app_id)
@@ -122,7 +125,16 @@ class AuthenticationProviders:
             if not password == '!!M3taM3ta':
                 return False, ['That password was wrong, sorry']
             return True, []
-
+        
+    class MetaLayerAuthenticationProvider(object):
+        def authenticate(self, username, password):
+            #TODO In later versions this should alos check RiverID
+            if not password == '!!M3taM3ta':
+                return False["The password you supplied was incorrect"]
+            if not bool(re.search(username, config.get('appaccounts', 'apps'))):
+                return False["The password you supplied was not found"]
+            return True, []
+        
     class RiverIDAuthenticationProvider(object):
         def authenticate(self, username, password):
             key = config.get('oauthcredentials', 'oauth_consumer_key')
@@ -173,6 +185,11 @@ class RegistrationProviders:
                 return False, ['That password was wrong, sorry']
             return True, []
 
+    class MetaLayerRegistrationProvider(object):
+        def authenticate(self, username, password):
+            #TODO In later versions this should alos check RiverID
+            return False, ['Registration is not yet supported']
+        
     class RiverIDRegistrationProvider(object):
         def register(self, username, password, emailaddress):
             key = config.get('oauthcredentials', 'oauth_consumer_key')

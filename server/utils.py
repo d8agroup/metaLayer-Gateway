@@ -31,6 +31,8 @@ versions = {
     "swiftgateway":"0.1",
     "silcc":"0.1",
     "riverid":"0.1",
+    "metalayer":"0.1",
+    "metalens":"0.0.1",
 }
 
 #server logging

@@ -89,3 +89,17 @@ def riverid_validatecredentials_view(api_response):
     add_standard_json_html_response_headers(response)
     response.headers.add("Server", "RiverID/%s Swiftriver/%s" % (versions["riverid"], versions["swiftriver"]))
     return response
+
+def metalens_register_new_device_view(status, response_data):
+    response_json = create_standard_json_response('metalense','submitimage',status, response_data, False)
+    response = Response(response_json)
+    add_standard_json_html_response_headers(response)
+    response.headers.add("Server", "metaLayer/%s metaLens/%s" % (versions["metalayer"], versions["metalens"]))
+    return response
+
+def metalens_submit_image_view(status, response_data):
+    response_json = create_standard_json_response('metalense','submitimage',status, response_data, False)
+    response = Response(response_json)
+    add_standard_json_html_response_headers(response)
+    response.headers.add("Server", "metaLayer/%s metaLens/%s" % (versions["metalayer"], versions["metalens"]))
+    return response
