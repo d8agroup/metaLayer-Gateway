@@ -10,8 +10,8 @@ import util
 import errors
 
 tesseract_exe_name = 'tesseract' # Name of executable to be called at command line
-scratch_image_name = "temp.bmp" # This file must be .bmp or other Tesseract-compatible format
-scratch_text_name_root = "temp" # Leave out the .txt extension
+scratch_image_name = "/tmp/temp.bmp" # This file must be .bmp or other Tesseract-compatible format
+scratch_text_name_root = "/tmp/temp" # Leave out the .txt extension
 cleanup_scratch_flag = True  # Temporary files cleaned up after OCR operation
 
 def call_tesseract(input_filename, output_filename):

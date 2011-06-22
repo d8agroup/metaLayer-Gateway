@@ -3,11 +3,14 @@ from server import mappers
 from urllib2 import urlopen, HTTPError
 from domain.utils import get_authenticated_user_by_riverid
 from domain.utils import get_all_price_plans_for_app_template, create_new_subscription, con
+from lib.pytesser.pytesser import *
 import re
 import time
 import hashlib
 import json
+import os
 from domain.models import *
+from server.utils import baselogger
 
 def run_register_new_device_adapter(request, api_method_wrapper):
     view = getattr(views, api_method_wrapper.view)
@@ -50,4 +53,20 @@ def run_register_new_device_adapter(request, api_method_wrapper):
 def run_submit_image_adapter(request, api_method_wrapper):
     view = getattr(views, api_method_wrapper.view);
     
-    return view('success', {"nothing":"something"})
+    file = request.files.get('image')
+    
+    filename = int(time.time())
+    
+    file.save("/tmp/%s.tif" % filename)
+    
+    image = Image.open("/tmp/%s.tif" % filename)
+    
+    text = image_to_string(image)
+    
+    text = re.sub('\\n', ' ', text)
+    
+    image = None
+    
+    os.unlink("/tmp/%s.tif" % filename)
+    
+    return view('success', {"nothing":text})
