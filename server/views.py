@@ -103,3 +103,10 @@ def metalens_submit_image_view(status, response_data):
     add_standard_json_html_response_headers(response)
     response.headers.add("Server", "metaLayer/%s metaLens/%s" % (versions["metalayer"], versions["metalens"]))
     return response
+
+def metalens_search_for_image_view(status, response_data = None):
+    response_json = create_standard_json_response('metalense','searchforimage',status, response_data, True)
+    response = Response(response_json)
+    add_standard_json_html_response_headers(response)
+    response.headers.add("Server", "metaLayer/%s metaLens/%s" % (versions["metalayer"], versions["metalens"]))
+    return response

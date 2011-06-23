@@ -14,6 +14,7 @@ from server import mappers
 from urllib2 import urlopen, HTTPError
 from server.mashups.metalens import run_submit_image_adapter
 from server.mashups.metalens import run_register_new_device_adapter  
+from server.mashups.metalens import run_search_for_image_adapter
 
 def generic_error_handler(request, error_code, error_message):
     #TODO: Pass the error_message to the view
@@ -51,6 +52,8 @@ def metalens_handler(request, api_method_wrapper):
         return run_register_new_device_adapter(request, api_method_wrapper)
     elif api_method_wrapper.method_identifier == 'submitimage':
         return run_submit_image_adapter(request, api_method_wrapper)
+    elif api_method_wrapper.method_identifier == 'searchforimage':
+        return run_search_for_image_adapter(request, api_method_wrapper)
     view = getattr(views, 'error_404')
     return view(request, 'The method you were looking for is not supported')
 

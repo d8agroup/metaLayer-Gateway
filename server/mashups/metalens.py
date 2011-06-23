@@ -98,3 +98,28 @@ def run_submit_image_adapter(request, api_method_wrapper):
         urlopen(request)
     except HTTPError, e:
         baselogger.error("%s" % e)
+
+
+def run_search_for_image_adapter(request, api_method_wrapper):
+    view = getattr(views, api_method_wrapper.view);
+    
+    core_api_request = "%sapi/contentservices/getcontent.php" % config.get('services', 'core')
+    
+    core_api_parameters = {
+        "json":'{"id":"%s"}' % request.form.get('imageid'),
+        "key":request.form.get('deviceid'),
+    }
+    
+    request = Request(url=core_api_request, data=urlencode(core_api_parameters))
+    
+    try:
+        response = urlopen(request)
+        
+        response_data = response.read()
+        
+        return view('success', response_data)
+    
+    except HTTPError, e:
+        baselogger.error("%s" % e)
+        
+        return view('failure')
