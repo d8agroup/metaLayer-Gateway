@@ -11,6 +11,7 @@ __status__ = "Development"
 from werkzeug.local import Local, LocalManager
 from configuration.configuration import config
 from oauth2 import Request
+from threading import Thread
 import json
 import urllib2
 import re
@@ -43,6 +44,13 @@ logging_handler = logging.handlers.TimedRotatingFileHandler(baselogging_filename
 logging_handler.setFormatter(formatter)
 baselogger.addHandler(logging_handler)
 
+def async(gen):
+    def func(*args, **kwargs):
+        it = gen(*args, **kwargs)
+        result = it.next()
+        Thread(target=lambda: list(it)).start()
+        return result
+    return func
 
 class DefaultErrorHandler(urllib2.HTTPDefaultErrorHandler):
     def http_error_default(self, req, fp, code, msg, headers):

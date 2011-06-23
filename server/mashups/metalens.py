@@ -1,9 +1,11 @@
 from server import views
 from server import mappers
-from urllib2 import urlopen, HTTPError
+from urllib2 import urlopen, HTTPError, Request
+from urllib import urlencode
 from domain.utils import get_authenticated_user_by_riverid
 from domain.utils import get_all_price_plans_for_app_template, create_new_subscription, con
 from lib.pytesser.pytesser import *
+from configuration.configuration import config
 import re
 import time
 import hashlib
@@ -11,6 +13,7 @@ import json
 import os
 from domain.models import *
 from server.utils import baselogger
+from server.utils import async
 
 def run_register_new_device_adapter(request, api_method_wrapper):
     view = getattr(views, api_method_wrapper.view)
@@ -50,6 +53,7 @@ def run_register_new_device_adapter(request, api_method_wrapper):
         
     return view('success', {'key':user_app.key, 'secret':user_app.secret})
 
+@async
 def run_submit_image_adapter(request, api_method_wrapper):
     view = getattr(views, api_method_wrapper.view);
     
@@ -68,5 +72,29 @@ def run_submit_image_adapter(request, api_method_wrapper):
     image = None
     
     os.unlink("/tmp/%s.tif" % filename)
+
+    is_text = len(text.strip(' \t\n\r')) != 0
     
-    return view('success', {"nothing":text})
+    if(is_text):
+        return_data = view('success', {"message":"Text was extracted from your image and has been submitted for processing"})
+    else:
+        return_data = view('failure', {"message":"No text could be extracted from the image"})    
+    
+    yield return_data
+    
+    core_api_request = "%sapi/channelservices/pushtochannel.php" % config.get('services', 'core')
+    
+    core_api_parameters = {
+        "deviceid":request.form.get('deviceid'),
+        "imageid":request.form.get('imageid'),
+        "key":request.form.get('deviceid'),
+        "origin":"MetalensImageText",
+        "text":text
+    }
+    
+    request = Request(url=core_api_request, data=urlencode(core_api_parameters))
+    
+    try:
+        urlopen(request)
+    except HTTPError, e:
+        baselogger.error("%s" % e)
