@@ -153,7 +153,7 @@ def datalayer_tagging_view(api_response):
     if data['status'] == 'failed':
         response_json = create_standard_json_response('datalayer','tagging','failure', {'errors':[data['error']]}, False)
     else:
-        response_json = create_standard_json_response('datalayer','tagging','success', { 'datalayer':{ 'tagging':data['datalayer']['tagging'] } }, False)
+        response_json = create_standard_json_response('datalayer','tagging','success', { 'datalayer':{ 'tags':data['datalayer']['tags'] } }, False)
     response = Response(response_json)
     add_standard_json_html_response_headers(response)
     response.headers.add("Server", "dataLayer/%s metaLayer/%s" % (versions["datalayer"], versions["metalayer"]))
