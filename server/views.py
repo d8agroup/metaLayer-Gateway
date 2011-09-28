@@ -134,3 +134,27 @@ def datalayer_sentiment_view(api_response):
     add_standard_json_html_response_headers(response)
     response.headers.add("Server", "dataLayer/%s metaLayer/%s" % (versions["datalayer"], versions["metalayer"]))
     return response
+
+def datalayer_locations_view(api_response):
+    json_string = api_response.read()
+    data = json.loads(json_string)
+    if data['status'] == 'failed':
+        response_json = create_standard_json_response('datalayer','locations','failure', {'errors':[data['error']]}, False)
+    else:
+        response_json = create_standard_json_response('datalayer','locations','success', { 'datalayer':{ 'locations':data['datalayer']['locations'] } }, False)
+    response = Response(response_json)
+    add_standard_json_html_response_headers(response)
+    response.headers.add("Server", "dataLayer/%s metaLayer/%s" % (versions["datalayer"], versions["metalayer"]))
+    return response
+
+def datalayer_tagging_view(api_response):
+    json_string = api_response.read()
+    data = json.loads(json_string)
+    if data['status'] == 'failed':
+        response_json = create_standard_json_response('datalayer','tagging','failure', {'errors':[data['error']]}, False)
+    else:
+        response_json = create_standard_json_response('datalayer','tagging','success', { 'datalayer':{ 'tagging':data['datalayer']['tagging'] } }, False)
+    response = Response(response_json)
+    add_standard_json_html_response_headers(response)
+    response.headers.add("Server", "dataLayer/%s metaLayer/%s" % (versions["datalayer"], versions["metalayer"]))
+    return response
