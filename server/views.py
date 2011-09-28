@@ -115,9 +115,21 @@ def datalayer_full_view(api_response):
     json_string = api_response.read()
     data = json.loads(json_string)
     if data['status'] == 'failed':
-        response_json = create_standard_json_response('datalayer','full','failure', {'errors':[data['error']]}, False)
+        response_json = create_standard_json_response('datalayer','bundle','failure', {'errors':[data['error']]}, False)
     else:
-        response_json = create_standard_json_response('datalayer','full','success', { 'datalayer':data['datalayer'] }, False)
+        response_json = create_standard_json_response('datalayer','bundle','success', { 'datalayer':data['datalayer'] }, False)
+    response = Response(response_json)
+    add_standard_json_html_response_headers(response)
+    response.headers.add("Server", "dataLayer/%s metaLayer/%s" % (versions["datalayer"], versions["metalayer"]))
+    return response
+
+def datalayer_sentiment_view(api_response):
+    json_string = api_response.read()
+    data = json.loads(json_string)
+    if data['status'] == 'failed':
+        response_json = create_standard_json_response('datalayer','sentiment','failure', {'errors':[data['error']]}, False)
+    else:
+        response_json = create_standard_json_response('datalayer','sentiment','success', { 'datalayer':{ 'sentiment':data['datalayer']['sentiment'] } }, False)
     response = Response(response_json)
     add_standard_json_html_response_headers(response)
     response.headers.add("Server", "dataLayer/%s metaLayer/%s" % (versions["datalayer"], versions["metalayer"]))
