@@ -110,3 +110,15 @@ def metalens_search_for_image_view(status, response_data = None):
     add_standard_json_html_response_headers(response)
     response.headers.add("Server", "metaLayer/%s metaLens/%s" % (versions["metalayer"], versions["metalens"]))
     return response
+
+def datalayer_full_view(api_response):
+    json_string = api_response.read()
+    data = json.loads(json_string)
+    if data['status'] == 'failed':
+        response_json = create_standard_json_response('datalayer','full','failure', {'errors':[data['error']]}, False)
+    else:
+        response_json = create_standard_json_response('datalayer','full','success', { 'datalayer':data['datalayer'] }, False)
+    response = Response(response_json)
+    add_standard_json_html_response_headers(response)
+    response.headers.add("Server", "dataLayer/%s metaLayer/%s" % (versions["datalayer"], versions["metalayer"]))
+    return response

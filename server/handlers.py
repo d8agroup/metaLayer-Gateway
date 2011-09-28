@@ -15,6 +15,7 @@ from urllib2 import urlopen, HTTPError
 from server.mashups.metalens import run_submit_image_adapter
 from server.mashups.metalens import run_register_new_device_adapter  
 from server.mashups.metalens import run_search_for_image_adapter
+from server.mashups.datalayer import datalayer_full
 
 def generic_error_handler(request, error_code, error_message):
     #TODO: Pass the error_message to the view
@@ -24,7 +25,6 @@ def generic_error_handler(request, error_code, error_message):
 
 def generic_api_request_handler(request, api_method_wrapper):
     """Maps and formats the incoming request and calls the underlying API service"""
-
     #get the mapper function for this path
     mapper = getattr(mappers, api_method_wrapper.mapper)
 
@@ -44,8 +44,9 @@ def generic_api_request_handler(request, api_method_wrapper):
     except HTTPError, e:
         #TODO: This needs to be converted into a SwiftGateway error
         pass
-
-    return Response(response.read())
+    
+def datalayer_handler(request, api_method_wrapper):
+    return datalayer_full(request, api_method_wrapper)
 
 def metalens_handler(request, api_method_wrapper):
     if api_method_wrapper.method_identifier == 'registernewdevice':
