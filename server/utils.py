@@ -34,7 +34,8 @@ versions = {
     "riverid":"0.1",
     "metalayer":"0.1",
     "metalens":"0.0.1",
-    "datalayer":"0.0.1"
+    "datalayer":"0.0.1",
+    "imglayer":"0.0.1"
 }
 
 #server logging
