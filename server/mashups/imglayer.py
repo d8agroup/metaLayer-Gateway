@@ -2,6 +2,7 @@ from poster.encode import multipart_encode, MultipartParam
 from poster.streaminghttp import register_openers
 import server.views as views
 import urllib2, urllib
+import StringIO
 
 
 def imglayer_full(request, api_method_wrapper):
