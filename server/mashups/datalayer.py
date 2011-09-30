@@ -1,5 +1,6 @@
 import urllib2, urllib
 import server.views as views  
+import StringIO
 
 def datalayer_full(request, api_method_wrapper):
     view = getattr(views, api_method_wrapper.view)
@@ -7,7 +8,7 @@ def datalayer_full(request, api_method_wrapper):
     text = request.form.get('text')
     
     if not text:
-        view('failure', {"errors":["You did not include the required POST field \"text\""]})
+        view(StringIO.StringIO('{"status":"failed", "errors":["You did not include the required POST field \"text\""]}'))
         
     url = api_method_wrapper.endpoint
     
