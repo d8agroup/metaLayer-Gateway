@@ -6,7 +6,7 @@ def datalayer_full(request, api_method_wrapper):
     view = getattr(views, api_method_wrapper.view)
     
     if 'text' not in request.form:
-        view(StringIO.StringIO('{"status":"failed", "error":"You did not include the required POST field text"}'))
+        return view(StringIO.StringIO('{"status":"failed", "error":"You did not include the required POST field text"}'))
         
     text = request.form.get('text')
     
