@@ -10,7 +10,7 @@ def imglayer_full(request, api_method_wrapper):
     image = request.files.get('image')
     
     if not image:
-        view('failure', {"errors":["You did not include the required POST file \"image\""]})
+        return view(StringIO.StringIO('{"status":"failed", "error":"You did not include the required POST file image"}'))
         
     url = api_method_wrapper.endpoint
     
