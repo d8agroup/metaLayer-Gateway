@@ -5,11 +5,11 @@ import StringIO
 def datalayer_full(request, api_method_wrapper):
     view = getattr(views, api_method_wrapper.view)
     
-    text = request.form.get('text')
-    
-    if not text:
+    if 'text' not in request.form:
         view(StringIO.StringIO('{"status":"failed", "error":"You did not include the required POST field text"}'))
         
+    text = request.form.get('text')
+    
     url = api_method_wrapper.endpoint
     
     data = { 'text':text }
