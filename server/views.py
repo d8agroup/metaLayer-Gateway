@@ -199,9 +199,9 @@ def imglayer_ocr_view(api_response):
     json_string = api_response.read()
     data = json.loads(json_string)
     if data['status'] == 'failed':
-        response_json = create_standard_json_response('imglayer','histogram','failure', {'errors':[data['error']]}, False)
+        response_json = create_standard_json_response('imglayer','ocr','failure', {'errors':[data['error']]}, False)
     else:
-        response_json = create_standard_json_response('imglayer','histogram','success', { 'datalayer': { 'text':data['datalayer']['text'], 'tags':data['datalayer']['tags'], 'locations':data['datalayer']['locations'] } }, False)
+        response_json = create_standard_json_response('imglayer','ocr','success', { 'datalayer': { 'text':data['datalayer']['text'], 'tags':data['datalayer']['tags'], 'locations':data['datalayer']['locations'] } }, False)
     response = Response(response_json)
     add_standard_json_html_response_headers(response)
     response.headers.add("Server", "imgLayer/%s metaLayer/%s" % (versions["imglayer"], versions["metalayer"]))
