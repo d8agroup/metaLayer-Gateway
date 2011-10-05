@@ -219,3 +219,15 @@ def imglayer_facedetection_view(api_response):
     response.headers.add("Server", "imgLayer/%s metaLayer/%s" % (versions["imglayer"], versions["metalayer"]))
     return response
 
+def snipsnap_tagging_view(api_response):
+    json_string = api_response.read()
+    data = json.loads(json_string)
+    if data['status'] == 'failed':
+        response_json = create_standard_json_response('snipsnap','tagging','failure', {'errors':[data['error']]}, False)
+    else:
+        response_json = create_standard_json_response('snipsnap','tagging','success', { 'datalayer':{ 'tags':data['datalayer']['tags'] } }, False)
+    response = Response(response_json)
+    add_standard_json_html_response_headers(response)
+    response.headers.add("Server", "dataLayer/%s metaLayer/%s" % (versions["datalayer"], versions["metalayer"]))
+    return response
+
