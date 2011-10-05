@@ -17,6 +17,7 @@ from server.mashups.metalens import run_register_new_device_adapter
 from server.mashups.metalens import run_search_for_image_adapter
 from server.mashups.datalayer import datalayer_full
 from server.mashups.imglayer import imglayer_full
+from server.mashups.snipsnap import snipsnap_full
 
 def generic_error_handler(request, error_code, error_message):
     #TODO: Pass the error_message to the view
@@ -51,6 +52,9 @@ def datalayer_handler(request, api_method_wrapper):
 
 def imglayer_handler(request, api_method_wrapper):
     return imglayer_full(request, api_method_wrapper)
+
+def snipsnap_handler(request, api_method_wrapper):
+    return snipsnap_full(request, api_method_wrapper)
 
 def metalens_handler(request, api_method_wrapper):
     if api_method_wrapper.method_identifier == 'registernewdevice':
