@@ -1,6 +1,7 @@
 import urllib2, urllib
 import server.views as views  
 import StringIO
+import json
 
 def snipsnap_full(request, api_method_wrapper):
     view = getattr(views, api_method_wrapper.view)
@@ -20,9 +21,17 @@ def snipsnap_full(request, api_method_wrapper):
     
     response = urllib2.urlopen(request)
     
-    tags = json.loads(request.read())
+    tags = json.loads(response.read())
     
-    tags['datalayer']['tags'] = ['testing']
+    black_list = ['coupon', 'limit', 'offer', 'expire', 'cannot', 'combined', 'any', 'coupon', 'presented', 'anytime', 'not', 'valid', 'on', 'prior', 'purchase']
+    
+    new_tags = []
+    
+    for tag in tags['datalayer']['tags']:
+        if tag.lower() not in black_list:
+            new_tags.append(tag)
+    
+    tags['datalayer']['tags'] = new_tags
     
     new_response = StringIO.StringIO(json.dumps(tags))
     
