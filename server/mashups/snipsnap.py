@@ -20,6 +20,12 @@ def snipsnap_full(request, api_method_wrapper):
     
     response = urllib2.urlopen(request)
     
-    return view(response)
+    tags = json.loads(request.read())
+    
+    tags['datalayer']['tags'] = ['testing']
+    
+    new_response = StringIO.StringIO(json.dumps(tags))
+    
+    return view(new_response)
 
     
