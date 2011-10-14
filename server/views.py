@@ -231,3 +231,15 @@ def snipsnap_tagging_view(api_response):
     response.headers.add("Server", "dataLayer/%s metaLayer/%s" % (versions["datalayer"], versions["metalayer"]))
     return response
 
+def kwelia_full_view(api_response):
+    json_string = api_response.read()
+    data = json.loads(json_string)
+    if data['status'] == 'failed':
+        response_json = create_standard_json_response('kwelia','bundle','failure', {'errors':[data['error']]}, False)
+    else:
+        response_json = create_standard_json_response('kwelia','bundle','success', { 'datalayer':{ 'tags':data['datalayer']['tags'], 'unique':True } }, False)
+    response = Response(response_json)
+    add_standard_json_html_response_headers(response)
+    response.headers.add("Server", "dataLayer/%s metaLayer/%s" % (versions["datalayer"], versions["metalayer"]))
+    return response
+
