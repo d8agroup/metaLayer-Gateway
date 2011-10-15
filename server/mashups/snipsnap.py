@@ -9,7 +9,7 @@ def snipsnap_full(request, api_method_wrapper):
     if 'text' not in request.form:
         return view(StringIO.StringIO('{"status":"failed", "error":"You did not include the required POST field text"}'))
         
-    text = request.form.get('text')
+    text = unicode(request.form.get('text'))
     
     url = api_method_wrapper.endpoint
     
