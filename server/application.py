@@ -113,7 +113,7 @@ class Server(object):
         handler = getattr(handlers, api_wrapper.request_handler)
 
         #Save the usage statatistcs inces there is an error from the remote call
-        safe_save_usage_statistics_stage_one(usage_statistics)
+        #safe_save_usage_statistics_stage_one(usage_statistics)
 
         try:
             response = handler(request, api_method_wrapper)
@@ -121,6 +121,7 @@ class Server(object):
             #TODO this needs to be handled as this means there is an error in our endpoint mapping or a service is down!
             response = generic_error_handler(request, '503', 'The service you request is temporarily unavailable.')
             baselogger.error('SERVICE URL ERROR - URL:%s | ERROR: %s' % (request.url, e))
+            usage_statistics['state'] = 'ERROR'
 
         #Save the usage statistics to show the end of the call
         safe_save_usage_statistics_stage_two(usage_statistics)

@@ -17,6 +17,7 @@ from domain.utils import validate_generic_description
 from domain.utils import validate_api_wrapper_requesthandler
 import MySQLdb
 import md5
+import random
 from configuration.configuration import config
 
 ################################################################################
@@ -339,13 +340,13 @@ class Subscription(Document):
 ################################################################################
 @con.register
 class APIUsageStatistics(dict):
-    def save_stage_one(self):
+    def save_stage_one(self, end_time="%f" % time.time()):
         self['save_stage_one'] = True
-        id = md5.md5("%s %d" % (self['remote_ip'], self['start_time'])).hexdigest()
+        id = md5.md5("%s %d %f" % (self['remote_ip'], self['start_time'], random.random())).hexdigest()
         if not 'state' in self:
             self['state'] = 'none'
         if 'service_id' in self and 'method_id' in self and 'app_id' in self:
-            sql = "INSERT INTO requests_current VALUES('%s','%s','%s','%s','%s','%s','%s',%f,NULL)" % (
+            sql = "INSERT INTO requests_current VALUES('%s','%s','%s','%s','%s','%s','%s',%f,%s)" % (
                 id,
                 self['state'],
                 self['remote_ip'],
@@ -353,30 +354,34 @@ class APIUsageStatistics(dict):
                 self['service_id'],
                 self['method_id'],
                 self['service_name'],
-                self['start_time'])
+                self['start_time'],
+                end_time)
         elif 'service_id' in self and 'method_id' in self:
-            sql = "INSERT INTO requests_current VALUES('%s','%s','%s',NULL,'%s','%s','%s',%f,NULL)" % (
+            sql = "INSERT INTO requests_current VALUES('%s','%s','%s',NULL,'%s','%s','%s',%f,%s)" % (
                 id,
                 self['state'],
                 self['remote_ip'],
                 self['service_id'],
                 self['method_id'],
                 self['service_name'],
-                self['start_time'])
+                self['start_time'],
+                end_time)
         elif 'service_id' in self:
-            sql = "INSERT INTO requests_current VALUES('%s','%s','%s',NULL,'%s',NULL,'%s',%f,NULL)" % (
+            sql = "INSERT INTO requests_current VALUES('%s','%s','%s',NULL,'%s',NULL,'%s',%f,%s)" % (
                 id,
                 self['state'],
                 self['remote_ip'],
                 self['service_id'],
                 self['service_name'],
-                self['start_time'])
+                self['start_time'],
+                end_time)
         else:
-            sql = "INSERT INTO requests_current VALUES('%s','%s','%s',NULL,NULL,NULL,NULL,%f,NULL)" % (
+            sql = "INSERT INTO requests_current VALUES('%s','%s','%s',NULL,NULL,NULL,NULL,%f,%s)" % (
                 id,
                 self['state'],
                 self['remote_ip'],
-                self['start_time'])
+                self['start_time'],
+                end_time)
         self['sql_stage_one'] = sql
         con = MySQLdb.connect(
             host=config.get('mysql', 'host'),
@@ -389,8 +394,13 @@ class APIUsageStatistics(dict):
         con.close()
 
     def save_stage_two(self):
-        if 'save_stage_one' not in self:
-            self.save_stage_one()
+        self.save_stage_one()
+        return
+        """
+        #if 'save_stage_one' not in self:
+            
+            #This was changed due to race conditions 
+            return
         if 'end_time' not in self:
             self['end_time'] = time.time()
         id = md5.md5("%s %d" % (self['remote_ip'], self['start_time'])).hexdigest()
@@ -413,6 +423,7 @@ class APIUsageStatistics(dict):
         cur.execute(sql)
         cur.close()
         con.close()
+        """
 
     def sql_dump(self):
         sql_one = self['sql_stage_one'] if 'sql_stage_one' in self else ''

@@ -116,7 +116,7 @@ def extract_oauth_consumer_key_from_auth_header_string(auth_header_string):
 def build_oauth_request_from_request(method, url, auth_header):
     return Request.from_request(method, url, auth_header)
 
-def safe_save_usage_statistics_stage_two(usage_statistics):
+def safe_save_usage_statistics_stage_two(usage_statistics, failed=False):
     try:
         usage_statistics.save_stage_two()
     except Exception, e:
