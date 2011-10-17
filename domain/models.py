@@ -395,35 +395,12 @@ class APIUsageStatistics(dict):
 
     def save_stage_two(self):
         self.save_stage_one()
+        """
+        There use to be update logic here but it was causing a race condition around the ids
+        to get over this, there is now only one save. This allows random to be introfuced into
+        the id
+        """
         return
-        """
-        #if 'save_stage_one' not in self:
-            
-            #This was changed due to race conditions 
-            return
-        if 'end_time' not in self:
-            self['end_time'] = time.time()
-        id = md5.md5("%s %d" % (self['remote_ip'], self['start_time'])).hexdigest()
-        if 'app_id' in self:
-            sql = "UPDATE requests_current SET app_id = '%s', end_time = '%f' WHERE id = '%s'" % (
-                self['app_id'],
-                self['end_time'],
-                id)
-        else:
-            sql = "UPDATE requests_current SET end_time = '%f' WHERE id = '%s'" % (
-                self['end_time'],
-                id)
-        self['sql_stage_two'] = sql
-        con = MySQLdb.connect(
-            host=config.get('mysql', 'host'),
-            user=config.get('mysql', 'user'),
-            passwd=config.get('mysql', 'password'),
-            db=config.get('mysql', 'database'))
-        cur = con.cursor()
-        cur.execute(sql)
-        cur.close()
-        con.close()
-        """
 
     def sql_dump(self):
         sql_one = self['sql_stage_one'] if 'sql_stage_one' in self else ''
