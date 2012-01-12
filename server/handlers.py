@@ -1,3 +1,5 @@
+from server.mashups.spling import spling_full
+
 __author__ = "Matthew Kidza-Griffiths"
 __copyright__ = "Copyright 2007, Swiftly.org"
 __credits__ = ["Matthew Kidza-Griffiths", "Jon Gosier"]
@@ -56,6 +58,9 @@ def imglayer_handler(request, api_method_wrapper):
 
 def snipsnap_handler(request, api_method_wrapper):
     return snipsnap_full(request, api_method_wrapper)
+
+def spling_handler(request, api_method_wrapper):
+    return spling_full(request, api_method_wrapper)
 
 def kwelia_handler(request, api_method_wrapper):
     return kwelia_full(request, api_method_wrapper)
