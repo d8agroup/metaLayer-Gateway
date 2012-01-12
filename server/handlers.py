@@ -1,4 +1,4 @@
-from server.mashups.spling import spling_full
+from server.mashups.spling import spling_full, spling_image_search
 
 __author__ = "Matthew Kidza-Griffiths"
 __copyright__ = "Copyright 2007, Swiftly.org"
@@ -60,7 +60,10 @@ def snipsnap_handler(request, api_method_wrapper):
     return snipsnap_full(request, api_method_wrapper)
 
 def spling_handler(request, api_method_wrapper):
+    if api_method_wrapper.method_identifier == 'image_search':
+        return spling_image_search(request, api_method_wrapper)
     return spling_full(request, api_method_wrapper)
+
 
 def kwelia_handler(request, api_method_wrapper):
     return kwelia_full(request, api_method_wrapper)
