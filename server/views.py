@@ -268,7 +268,7 @@ def kwelia_full_view(api_response):
     return response
 
 
-def tedglobe_full(response):
+def tedglobe_full_view(response):
     if not response:
         response_json = create_standard_json_response('tedglobe','bundle','failure', {'errors':['Sorry something went wrong :(']}, False)
     else:
