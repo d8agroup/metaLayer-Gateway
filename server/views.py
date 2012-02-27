@@ -267,3 +267,13 @@ def kwelia_full_view(api_response):
     response.headers.add("Server", "dataLayer/%s metaLayer/%s" % (versions["datalayer"], versions["metalayer"]))
     return response
 
+
+def tedglobe_full(response):
+    if not response:
+        response_json = create_standard_json_response('tedglobe','bundle','failure', {'errors':['Sorry something went wrong :(']}, False)
+    else:
+        response_json = create_standard_json_response('tedglobe','bundle','success', {'locations':response}, False)
+    response = Response(response_json)
+    add_standard_json_html_response_headers(response)
+    response.headers.add("Server", "dataLayer/%s metaLayer/%s" % (versions["datalayer"], versions["metalayer"]))
+    return response
