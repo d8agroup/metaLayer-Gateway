@@ -246,7 +246,7 @@ def spling_tagging_view(api_response):
 def spling_image_search_view(api_response):
     json_string = api_response.read()
     data = json.loads(json_string)
-    if data['status'] == 'failed':
+    if False: #data['status'] == 'failed':
         response_json = create_standard_json_response('spling','image_search','failure', {'errors':[data['error']]}, False)
     else:
         response_json = create_standard_json_response('spling','image_search','success', { 'imglayer':{ 'images':data['imglayer']['images'] } }, False)

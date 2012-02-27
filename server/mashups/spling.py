@@ -55,7 +55,7 @@ def spling_image_search(request, api_method_wrapper):
 
     image_search_url = 'http://api.bing.net/json.aspx?Appid=53FD9766868189E3BEDC3527303DA39249975A19&query=%s&sources=image' % '%20'.join(tags_for_image_search)
 
-    response = urllib2.urlopen(image_search_url)
+    response = urllib2.urlopen(image_search_url).read()
 
     response = json.loads(response)
 
