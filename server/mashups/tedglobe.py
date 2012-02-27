@@ -23,15 +23,12 @@ def tedglobe_full(request, api_method_wrapper):
 
     return_data = []
     for user in users:
-        try:
-            u = api.get_user(user)
-            location = u.location
-            post_data = urllib.urlencode({'text':location})
-            response = json.loads(urllib2.urlopen('http://api.metalayer.com/s/tedglobe/1/locations', data=post_data).read())
-            return_data.append({
-                'user':user,
-                'location':response['datalayer']['locations'][0]
-            })
-        except:
-            pass
+        u = api.get_user(user)
+        location = u.location
+        post_data = urllib.urlencode({'text':location})
+        response = json.loads(urllib2.urlopen('http://api.metalayer.com/s/tedglobe/1/locations', data=post_data).read())
+        return_data.append({
+            'user':user,
+            'location':response['datalayer']['locations'][0]
+        })
     return view(return_data)
