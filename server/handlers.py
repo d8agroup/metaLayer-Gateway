@@ -21,6 +21,7 @@ from server.mashups.datalayer import datalayer_full
 from server.mashups.imglayer import imglayer_full
 from server.mashups.snipsnap import snipsnap_full
 from server.mashups.kwelia import kwelia_full
+from server.mashups.tedglobe import tedglobe_full
 
 def generic_error_handler(request, error_code, error_message):
     #TODO: Pass the error_message to the view
@@ -78,3 +79,7 @@ def metalens_handler(request, api_method_wrapper):
     view = getattr(views, 'error_404')
     return view(request, 'The method you were looking for is not supported')
 
+def tedglobe_handler(request, api_method_wrapper):
+    if api_method_wrapper.method_identifier == 'locations':
+        return datalayer_full(request, api_method_wrapper)
+    return tedglobe_full(request, api_method_wrapper)
