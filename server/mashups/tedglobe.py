@@ -8,10 +8,10 @@ from server import views
 def tedglobe_full(request, api_method_wrapper):
     view = getattr(views, api_method_wrapper.view)
 
-    if 'users' not in request.args.keys():
+    if 'users' not in request.form:
         return view(None)
 
-    users = request.args['users'].split('|')
+    users = request.form['users'].split('|')
 
     CONSUMER_KEY = 'OjXvfklyIok5Y5ykvp31w'
     CONSUMER_SECRET = '78I5kuX9xpOSGNHB4hvnFv93LSvL75g9SBBaAbuO84'
